@@ -20,11 +20,11 @@ var (
 // closeRelatedIssues Closes issues listed in the PR description.
 func closeRelatedIssues(ctx context.Context, client *github.Client, owner string, repositoryName string, pr *github.PullRequest, dryRun bool) error {
 	issueNumbers := parseIssueFixes(pr.GetBody())
-
+	log.Printf("Natch - issue numbers: %v", issueNumbers)
 	for _, issueNumber := range issueNumbers {
 		log.Printf("PR #%d: closes issue #%d, add milestones %s", pr.GetNumber(), issueNumber, pr.Milestone.GetTitle())
 		
-		log.Printf("Natch - client: %s, owner: %s, repo: %s", client, owner, repositoryName)
+		log.Printf("Natch - client: %v, owner: %s, repo: %s, pr: %v", client, owner, repositoryName, pr)
 
 		if !dryRun {
 			err := closeIssue(ctx, client, owner, repositoryName, pr, issueNumber)
