@@ -23,6 +23,9 @@ func closeRelatedIssues(ctx context.Context, client *github.Client, owner string
 
 	for _, issueNumber := range issueNumbers {
 		log.Printf("PR #%d: closes issue #%d, add milestones %s", pr.GetNumber(), issueNumber, pr.Milestone.GetTitle())
+		
+		log.Printf("Natch - client: %s, owner: %s, repo: %s", client, owner, repositoryName)
+
 		if !dryRun {
 			err := closeIssue(ctx, client, owner, repositoryName, pr, issueNumber)
 			if err != nil {
@@ -72,6 +75,7 @@ func addComment(ctx context.Context, client *github.Client, owner string, reposi
 }
 
 func parseIssueFixes(text string) []int {
+	log.Printf("parseIssueFixes fuc - %s", text)
 	var issueNumbers []int
 
 	submatch := globalFixesIssueRE.FindStringSubmatch(strings.ReplaceAll(text, ":", ""))
@@ -92,3 +96,7 @@ func parseIssueFixes(text string) []int {
 	}
 	return issueNumbers
 }
+
+/* func parseCrossRepoIssueFixes(text string) []int {
+	return [0]
+} */
