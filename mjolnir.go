@@ -11,6 +11,13 @@ import (
 	"github.com/google/go-github/v32/github"
 )
 
+// create type for cross repository issue
+type crossRepoIssue struct {
+	owner string
+	repositoryName string
+	issueNumber int
+}
+
 var (
 	globalFixesIssueRE = regexp.MustCompile(`(?i)(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)((?:[\s]+#[\d]+)(?:[\s,]+#[\d]+)*(?:[\n\r\s,]|$))`)
 	fixesIssueRE       = regexp.MustCompile(`[\s,]+#`)
@@ -48,6 +55,8 @@ func closeRelatedIssues(ctx context.Context, client *github.Client, owner string
 		}
 	}
 
+	crossRepoIssues := parseCrossRepoIssueFixes(pr.GetBody())
+
 	return nil
 }
 
@@ -75,7 +84,6 @@ func addComment(ctx context.Context, client *github.Client, owner string, reposi
 }
 
 func parseIssueFixes(text string) []int {
-	log.Printf("parseIssueFixes fuc - %s", text)
 	var issueNumbers []int
 
 	submatch := globalFixesIssueRE.FindStringSubmatch(strings.ReplaceAll(text, ":", ""))
@@ -97,6 +105,14 @@ func parseIssueFixes(text string) []int {
 	return issueNumbers
 }
 
-func parseCrossRepoIssueFixes(text string) string {
-	return "parseCrossRepoIssueFixes function"
+func parseCrossRepoIssueFixes(text string) []crossRepoIssue {
+	log.Printf("parseCrossRepoIssueFixes fuc - %s", text)
+	crossRepoIssues := []crossRepoIssue{
+		{
+			owner: "knatch",
+			repositoryName: "knatch_github",
+			issueNumber: 2,
+		},
+	}
+	return crossRepoIssues
 }
