@@ -56,7 +56,17 @@ func closeRelatedIssues(ctx context.Context, client *github.Client, owner string
 	}
 
 	crossRepoIssues := parseCrossRepoIssueFixes(pr.GetBody())
-	log.Printf("crossRepoIssues: %v", crossRepoIssues)
+
+	for _, crossRepoIssue := range crossRepoIssues {
+		log.Printf("PR #%d: closes %s/%s issue #%d, add milestones %s", pr.GetNumber(), crossRepoIssue.owner, crossRepoIssue.repositoryName, crossRepoIssue.issueNumber, pr.Milestone.GetTitle())
+
+		if !dryRun {
+			err := closeIssue(ctx, client, crossRepoIssue.owner, crossRepoIssue.repositoryName, pr, crossRepoIssue.issueNumber)
+			if err != nil {
+				return fmt.Errorf("unable to close %s/%s issue #%d: %w", crossRepoIssue.owner, crossRepoIssue.repositoryName, issueNumber, err)
+			}
+		}
+	}
 
 	return nil
 }
@@ -111,8 +121,8 @@ func parseCrossRepoIssueFixes(text string) []crossRepoIssue {
 	crossRepoIssues := []crossRepoIssue{
 		{
 			owner: "knatch",
-			repositoryName: "knatch_github",
-			issueNumber: 2,
+			repositoryName: "knatch.github.io",
+			issueNumber: 1,
 		},
 	}
 	return crossRepoIssues
