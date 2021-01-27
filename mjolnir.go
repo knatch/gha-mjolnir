@@ -121,6 +121,11 @@ func parseCrossRepoIssueFixes(text string) []crossRepoIssue {
 	crossRepoIssues := []crossRepoIssue{
 		{
 			owner: "knatch",
+			repositoryName: "go-playground",
+			issueNumber: 13,
+		},
+		{
+			owner: "knatch",
 			repositoryName: "knatch.github.io",
 			issueNumber: 1,
 		},
