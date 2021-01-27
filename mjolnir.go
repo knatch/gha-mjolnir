@@ -56,6 +56,7 @@ func closeRelatedIssues(ctx context.Context, client *github.Client, owner string
 	}
 
 	crossRepoIssues := parseCrossRepoIssueFixes(pr.GetBody())
+	log.Printf("crossRepoIssues: %v", crossRepoIssues)
 
 	return nil
 }
