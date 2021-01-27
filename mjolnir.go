@@ -63,7 +63,7 @@ func closeRelatedIssues(ctx context.Context, client *github.Client, owner string
 		if !dryRun {
 			err := closeIssue(ctx, client, crossRepoIssue.owner, crossRepoIssue.repositoryName, pr, crossRepoIssue.issueNumber)
 			if err != nil {
-				return fmt.Errorf("unable to close %s/%s issue #%d: %w", crossRepoIssue.owner, crossRepoIssue.repositoryName, issueNumber, err)
+				return fmt.Errorf("unable to close %s/%s issue #%d: %w", crossRepoIssue.owner, crossRepoIssue.repositoryName, crossRepoIssue.issueNumber, err)
 			}
 		}
 	}
